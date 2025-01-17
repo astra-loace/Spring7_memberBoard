@@ -106,18 +106,21 @@ public class BoardService {
 	 */
 	public void insertBoard(BoardDTO boardDTO) {
 		// dto에서 전체 파일명과 저장 경로를 보내고, 저장될 파일명을 반환받음
-		String savedFileName = FileService.saveFile(boardDTO.getUploadFile(), uploadPath);
-		String originalFileName = boardDTO.getUploadFile().getOriginalFilename();
+		MultipartFile uploadFile = boardDTO.getUploadFile();
 		
+		String savedFileName = null;
+		String originalFileName = null;
+		
+		if(!uploadFile.isEmpty()) {
+			savedFileName =  FileService.saveFile(uploadFile, uploadPath);
+			originalFileName = uploadFile.getOriginalFilename();
+		}
+
 		boardDTO.setSavedFileName(savedFileName);
 		boardDTO.setOriginalFileName(originalFileName);
 		
 		BoardEntity entity = BoardEntity.toEntity(boardDTO);
-		
-		if (boardDTO.getUploadFile().isEmpty() == true) {
-		    boardDTO.setOriginalFileName(null);
-	}
-		
+				
 //		log.info("파일 저장 경로: {}", uploadPath);
 		
 		boardRepository.save(entity);
@@ -132,7 +135,7 @@ public class BoardService {
 	public BoardDTO selectOne(Long boardSeq) {
 		Optional<BoardEntity> temp = boardRepository.findById(boardSeq);
 
-		if (temp.isEmpty())
+		if (!temp.isPresent())
 			return null;
 
 		return BoardDTO.toDTO(temp.get());

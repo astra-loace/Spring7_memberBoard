@@ -84,8 +84,6 @@ public class BoardEntity {
 				.boardTitle(boardDTO.getBoardTitle())
 				.boardContent(boardDTO.getBoardContent())
 				.hitCount(boardDTO.getHitCount())
-				.createDate(boardDTO.getCreateDate())
-				.updateDate(boardDTO.getUpdateDate())
 				.originalFileName(boardDTO.getOriginalFileName())
 				.savedFileName(boardDTO.getSavedFileName())
 				.build();

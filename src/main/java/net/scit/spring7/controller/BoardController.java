@@ -114,14 +114,15 @@ public class BoardController {
 	public String boardWrite(@ModelAttribute BoardDTO boardDTO) {
 		// DB 등록
 //		log.info("========= {}", boardDTO.toString());
-		MultipartFile file = boardDTO.getUploadFile();
+/*		MultipartFile file = boardDTO.getUploadFile();
 		log.info("===파일: {}", file);
 		log.info("===파일: {}", file.getContentType());
 		log.info("===파일: {}", file.getOriginalFilename());
 		log.info("===파일: {}", file.getSize());
 		log.info("===파일: {}", file.isEmpty());
-		
+*/		
 		boardService.insertBoard(boardDTO);
+		
 		return "redirect:/board/boardList";
 	}
 
@@ -150,7 +151,7 @@ public class BoardController {
 	}
 
 	/**
-	 * 게시글 삭제
+	 * boardSeq 번호에 해당하는 게시글 데이터 삭제
 	 * 
 	 * @param boardSeq
 	 * @return
@@ -168,7 +169,8 @@ public class BoardController {
 	}
 
 	/**
-	 * 수정을 위한 화면 요청
+	 * 게시글 수정화면 요청
+	 * boardSeq 번호에 해당하는 데이터 조회 후 수정화면에 반영
 	 * 
 	 * @param boardSeq
 	 * @param model
@@ -179,16 +181,18 @@ public class BoardController {
 			@RequestParam(name="searchItem", defaultValue = "boardTitle") String searchItem,
 			@RequestParam(name="searchWord", defaultValue = "") String searchWord,
 			@RequestParam(name = "boardSeq") Long boardSeq, Model model) {
+		
 		BoardDTO boardDTO = boardService.selectOne(boardSeq);
+		
 		model.addAttribute("board", boardDTO);
 		model.addAttribute("searchItem", searchItem);
 		model.addAttribute("searchWord", searchWord);
+		
 		return "board/boardUpdate";
 	}
 
 	/**
 	 * 게시글 수정 처리 요청 
-	 * 
 	 * @param boardDTO
 	 * @return
 	 */
@@ -198,8 +202,11 @@ public class BoardController {
 			@RequestParam(name="searchItem", defaultValue = "boardTitle") String searchItem,
 			@RequestParam(name="searchWord", defaultValue = "") String searchWord,
 			RedirectAttributes rttr) {
+		
 		log.info("==== 수정데이터: {}", boardDTO.toString());
+		
 		boardService.updateBoard(boardDTO);
+		
 		rttr.addAttribute("searchItem", searchItem);
 		rttr.addAttribute("searchWord", searchWord);
 		

@@ -1,0 +1,36 @@
+<div class="content">
+    <form th:action="@{/board/boardUpdate(searchItem=${searchItem}, searchWord=${searchWord})}" method="POST">
+        <!-- 두 종류의 데이터(boardSeq, boardWriter(writer는 security 완성되면 삭제 예정)) -->
+        <input type="hidden" name="boardSeq" th:value="${board.boardSeq}">
+        <input type="hidden" name="boardWriter" th:value="${board.boardWriter}">
+        <table>
+            <tr>
+                <th>작성자</th>
+                <td><span th:text="${board.boardWriter}"></span></td>
+            </tr>
+            <tr>
+                <th>글제목</th>
+                <td><input type="text" name="boardTitle" id="boardTitle" th:value="${board.boardTitle}" required /></td>
+            </tr>
+            <tr>
+                <th>작성일</th>
+                <td><span name="createDate" id="createDate"
+                        th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}"></span></td>
+            </tr>
+            <tr>
+                <th>글내용</th>
+                <td><textarea name="boardContent" id="boardContent" th:text="${board.boardContent}"></textarea></td>
+            </tr>
+            <tr>
+                <th>첨부파일</th>
+                <td><input type="file" name="" id="" /></td>
+            </tr>
+            <tr>
+                <th colspan="2">
+                    <input type="submit" value="글수정" class="btn btn-warning" />
+                    <input type="reset" value="초기화" class="btn btn-danger" />
+                </th>
+            </tr>
+        </table>
+    </form>
+</div>

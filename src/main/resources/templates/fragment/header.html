@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org"
+                xmlns:sec="http://thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title}</title>
+
+</head>
+<body>
+    <!-- fragment 처리-->
+    <div class="container" th:fragment="top-menu(title)">
+        <div class="logo">
+            <a href="../index.html" th:href="@{/}">
+                <img src="../../static/images/board.png" th:src="@{/images/board.png}" alt="board">
+            </a>
+        </div>
+        <h2>[[${title}]]</h2>
+    </div>
+
+    <!-- 로그인 여부 확인 -->
+    <div id="user">
+        <ul>
+            <li>
+            <!-- 인증하지 않은 사용자 -->
+            <th:block sec:authorize="isAnonymous()">
+                <a th:href="@{/user/login}">로그인</a>
+            </th:block>    
+
+            <!-- 인증한 사용자-->
+            <th:block sec:authorize="isAuthenticated()">
+                <a th:href="@{/user/logout}">[[${loginName}]]([[${#authentication.name}]])님, 로그아웃</a>
+            </th:block>
+            </li>
+        </ul>
+    </div>
+
+
+</body>

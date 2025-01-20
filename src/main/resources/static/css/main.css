@@ -100,7 +100,8 @@ table, th, td {
 }
 
 th {
-    background-color: lightgoldenrodyellow;
+    background: linear-gradient(90deg, rgb(204, 221, 255) 0%, rgb(11, 0, 82) 100%);
+    color: gold;
     text-align: center;
     padding: 10px;
     font-weight: bold;

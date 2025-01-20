@@ -22,19 +22,26 @@
     
     <div class="gnb">
         <ul>
-            <li>
             <!-- 인증하지 않은 사용자 -->
             <th:block sec:authorize="isAnonymous()">
-                <a th:href="@{/user/join}">회원가입</a>
-                <a th:href="@{/user/login}">로그인</a>
-            </th:block>    
-            <!-- 인증한 사용자-->
-            <th:block sec:authorize="isAuthenticated()">
-                <a th:href="@{/user/logout}">로그아웃</a>
-                <a th:href="@{/user/mypage}">개인정보 수정</a>  
+                <li><a th:href="@{/user/join}">회원가입</a></li>
+                <li><a th:href="@{/user/login}">로그인</a></li>
             </th:block>
-            <!-- 인증과 관련없음-->
-                <a href="./board/boardList.html" th:href="@{/board/boardList}">게시판</a>
+    
+            <!-- 인증한 사용자  -->
+            <th:block sec:authorize="isAuthenticated()">
+                <li><a th:href="@{/user/logout}">[[${loginName}]]([[${#authentication.name}]])님, 로그아웃</a></li>
+                <li><a th:href="@{/user/mypage}">개인정보 수정</a></li>
+
+                <!-- 관리자인 경우 메뉴를 추가 -->
+                <th:block th:if="${loginUser.roles == 'ROLE_ADMIN'}">
+                    <li><a th:href="@{/admin/adminpage}">관리자 페이지</a></li>
+                </th:block>
+            </th:block>
+    
+            <!-- 인증과 관련 없는 메뉴 -->
+            <li>
+              <a href="./board/boardList.html" th:href="@{/board/boardList}">게시판</a>
             </li>
         </ul>
     </div>

@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.scit.spring7.dto.UserDTO;
@@ -69,6 +70,28 @@ public class UserService {
 		}
 		
 		return null;
+	}
+	/**
+	 * DB에서 개인정보 수정 처리 
+	 * @param userDTO
+	 */
+	@Transactional
+	public void updateProc(UserDTO userDTO) {
+		String id = userDTO.getUserId();
+		
+		Optional<UserEntity> temp = userRepository.findById(id);
+		if (temp.isPresent()) {
+			UserEntity entity = temp.get();
+			
+			// 사용자가 입력한 정보 
+			String encodedPwd = bCryptPasswordEncoder.encode(userDTO.getUserPwd());
+			String email = userDTO.getEmail();
+			
+			// DB에서 뽑아낸 정보 (비밀번호, 이메일만 변경)
+			entity.setUserPwd(encodedPwd);
+			entity.setEmail(email);
+		}
+		
 	}
 
 }

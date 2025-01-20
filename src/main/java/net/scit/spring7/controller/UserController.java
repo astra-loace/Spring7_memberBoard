@@ -54,13 +54,16 @@ public class UserController {
 	 * */
 	@GetMapping("/login")
 	public String login(
-			@RequestParam(name="error", required = false) String error,
+			@RequestParam(name = "error", required = false) String error,
+			@RequestParam(name="errMessage", required = false) String errMessage,
 			Model model
 			) {
-		model.addAttribute("error", error);
-		model.addAttribute("errMessage", "아이디와 비밀번호를 확인해주세요.");
 		
-		return "user/login";
+		model.addAttribute("error", error);
+		model.addAttribute("errMessage", errMessage);	// 핸들러 처리를 통해 가져온 오류 메세지
+//		model.addAttribute("errMessage", "아이디나 비밀번호가 틀렸습니다.");
+		
+		return "/user/login";
 	}
 	
 	/**
@@ -78,7 +81,7 @@ public class UserController {
 	 * @param userPwd
 	 * @return
 	 * */
-	@PostMapping("/updateProc")
+	@PostMapping("/pwdCheck")
 	public String updateProc(
 			@RequestParam(name="userId") String userId,
 			@RequestParam(name="userPwd") String userPwd
@@ -91,6 +94,26 @@ public class UserController {
 		if (userDTO != null) {
 			return "/user/myInfoUpdate";
 		}
+		
+		return "redirect:/";
+	}
+	
+	/**
+	 * 사용자 정보 데이터를 수정하는 작업 요청 
+	 * @param userDTO
+	 * @return
+	 */
+	@PostMapping("/updateProc")
+	public String updateProc(
+			@ModelAttribute UserDTO userDTO
+			) {
+		log.info("-- {}", userDTO.toString());
+		
+		// DB 에서 수정 처리 
+		userService.updateProc(userDTO);
+		
+		// 수정을 완료하면 로그아웃 (새로운 비밀번호로 다시 로그인 하게 만든다)
+		
 		
 		return "redirect:/";
 	}

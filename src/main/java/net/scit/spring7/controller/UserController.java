@@ -78,33 +78,21 @@ public class UserController {
 	 * @param userPwd
 	 * @return
 	 * */
-	@PostMapping("/pwdCheck")
-	public String pwdCheck(Model model,
+	@PostMapping("/updateProc")
+	public String updateProc(
 			@RequestParam(name="userId") String userId,
 			@RequestParam(name="userPwd") String userPwd
 			) {
+		log.info("=== {} / {}", userId, userPwd);
 		
 		// DB에 가서 아이디와 비밀번호가 맞는지 확인
 		UserDTO userDTO = userService.pwdCheck(userId, userPwd);
 		
 		if (userDTO != null) {
-			model.addAttribute("userDTO", userDTO);
 			return "/user/myInfoUpdate";
 		}
 		
 		return "redirect:/";
-	}
-	
-	@PostMapping("/updateProc")
-	public String updateProc(@ModelAttribute UserDTO userDTO) {
-		log.info("-- {}", userDTO.toString());
-		
-		// DB에서 수정처리
-		userService.updateProc(userDTO);
-		
-		// 수정을 완료했다면 로그아웃 (>새로운 비밀번호로 로그인을 다시 하도록 함)
-		return "redirect:/user/logout";
-		
 	}
 
 }

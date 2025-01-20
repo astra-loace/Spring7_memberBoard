@@ -29,7 +29,7 @@ public class SecurityConfig {
 				"/js/**",
 				"/css/**").permitAll()								
 			.requestMatchers("/admin").hasRole("ADMIN")				
-			.requestMatchers("/mypage/**").hasAnyRole("ADMIN", "USER")	
+			.requestMatchers("/user/mypage/**").hasAnyRole("ADMIN", "USER")	
 			.anyRequest().authenticated());		
 		
 		

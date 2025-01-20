@@ -31,7 +31,7 @@
             <!-- 인증한 사용자-->
             <th:block sec:authorize="isAuthenticated()">
                 <a th:href="@{/user/logout}">로그아웃</a>
-                <a href="#">개인정보 수정</a>  
+                <a th:href="@{/user/mypage}">개인정보 수정</a>  
             </th:block>
             <!-- 인증과 관련없음-->
                 <a href="./board/boardList.html" th:href="@{/board/boardList}">게시판</a>

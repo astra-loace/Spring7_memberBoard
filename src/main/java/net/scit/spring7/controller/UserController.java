@@ -62,5 +62,37 @@ public class UserController {
 		
 		return "user/login";
 	}
+	
+	/**
+	 * 회원 정보를 위한 페이지 요청
+	 * @return
+	 * */
+	@GetMapping("/mypage")
+	public String mypage() {
+		return "user/mypage";
+	}
+	
+	/**
+	 * 개인정보 수정을 위한 아이디/비밀번호 요청
+	 * @param userId
+	 * @param userPwd
+	 * @return
+	 * */
+	@PostMapping("/updateProc")
+	public String updateProc(
+			@RequestParam(name="userId") String userId,
+			@RequestParam(name="userPwd") String userPwd
+			) {
+		log.info("=== {} / {}", userId, userPwd);
+		
+		// DB에 가서 아이디와 비밀번호가 맞는지 확인
+		UserDTO userDTO = userService.pwdCheck(userId, userPwd);
+		
+		if (userDTO != null) {
+			return "/user/myInfoUpdate";
+		}
+		
+		return "redirect:/";
+	}
 
 }

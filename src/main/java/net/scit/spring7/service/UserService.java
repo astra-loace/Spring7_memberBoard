@@ -1,5 +1,7 @@
 package net.scit.spring7.service;
 
+import java.util.Optional;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +45,30 @@ public class UserService {
 		boolean result = userRepository.existsById(userDTO.getUserId());	
 		
 		return result;
+	}
+	
+	/**
+	 * 입력한 비밀번호가 맞는지 확인
+	 * @param userId
+	 * @param userPwd
+	 * @return
+	 * */
+	public UserDTO pwdCheck(String userId, String userPwd) {
+		Optional<UserEntity> temp = userRepository.findById(userId);
+		
+		if (temp.isPresent()) {
+			UserEntity entity = temp.get(); // 데이터 꺼내기
+			String encodedPwd = entity.getUserPwd(); // 근데 이건 암호화된 비번
+			// userPwd는 raw data. 저 둘을 비교하려면 아까 위에 정의해둔 bCrypt 어쩌고가 필요함. 거기 matches 메소드를 사용할 거야.
+			
+			boolean result = bCryptPasswordEncoder.matches(userPwd, encodedPwd); // 입력된 비번, DB 암호화된 비번이 같은 비번인지 확인
+			
+			if(result) {
+				return UserDTO.toDTO(entity);
+			}
+		}
+		
+		return null;
 	}
 
 }

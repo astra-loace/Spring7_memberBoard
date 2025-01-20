@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="../../static/css/user.css" th:href="@{/css/user.css}">    
     <!-- javaScript & jQuery 불러오기-->
     <script src="../../static/js/jquery-3.7.1.min.js" th:src="@{/js/jquery-3.7.1.min.js}"></script>
-    <script defer src="../../static/js/join.js" th:src="@{/js/join.js}"></script>
+    <script defer src="../../static/js/update.js" th:src="@{/js/update.js}"></script>
 </head>
 
 <body>
@@ -23,7 +23,7 @@
         <div class="logo">
             <img src="../../static/images/board.png" th:src="@{/images/board.png}" alt="board">
         </div> 
-        <h2>회원가입</h2>
+        <h2>회원정보 수정</h2>
     </div>    <!-- end.container -->
     
     <!-- 회원정보 수정 화면 -->
@@ -34,8 +34,12 @@
                     <ul>
                         <li>
                             <i class="fa-solid fa-fingerprint"></i>
-                            <input type="text" name="userId" id="userId" placeholder="ID 입력">
-                            <div id="confirmId" style="font-size: 0.8em;"></div>
+                            <input type="text" name="userId" id="userId" th:value="${#authentication.name}" readonly>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" name="userName" id="userName" th:value="${userDTO.userName}" readonly>
+                            <div id="confirmUserName" style="font-size: 0.8em;"></div>                            
                         </li>
                         <!--패스워드 입력/패스워드 체크/이름/이메일-->
                         <li>
@@ -47,20 +51,16 @@
                             <i class="fa-solid fa-key"></i>
                             <input type="password" id="userPwdCheck" placeholder="Password 확인">
                         </li>
-                        <li>
-                            <i class="fa-solid fa-user"></i>
-                            <input type="text" name="userName" id="userName" placeholder="실명 입력">
-                            <div id="confirmUserName" style="font-size: 0.8em;"></div>                            
-                        </li>
+
                         <li>
                             <i class="fa-solid fa-envelope"></i>
-                            <input type="email" name="email" id="email" placeholder="이메일 입력">
+                            <input type="email" name="email" id="email" th:value="${userDTO.email}">
                             <div id="confirmEmail" style="font-size: 0.8em;"></div>                            
                         </li>
                     </ul>
 
                     <div class="btns">
-                        <input type="submit" id="submitBtn" value="회원가입" class="btn btn-primary">&nbsp;
+                        <input type="submit" id="submitBtn" value="회원정보 수정" class="btn btn-primary">&nbsp;
                         <input type="reset" id="resetBtn" value="초기화" class="btn btn-light">&nbsp;
                     </div>
                 </div>

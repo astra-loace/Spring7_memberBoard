@@ -49,8 +49,6 @@ public class SecurityConfig {
 					.logoutSuccessUrl("/")				
 					.invalidateHttpSession(true)		
 					);
-			
-		
 		
 		http
 			.csrf((auth) -> auth.disable());
